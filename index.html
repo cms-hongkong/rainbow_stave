@@ -15,7 +15,18 @@
             --b-purple: #8E44AD;
             --acc-black: #2C3E50;
             --staff-line-color: #cbd5e1;
-            --system-width: 900px;
+            
+            /* 精確小節槽度尺寸：1拍寬 68px，間距 12px */
+            --slot-w: 68px;
+            --slot-gap: 12px;
+            /* 
+               1 拍 = 68px
+               2 拍 = 68*2 + 12 = 148px (精確覆蓋 2 個 1 拍)
+               4 拍 = 68*4 + 12*3 = 308px (精確覆蓋 4 個 1 拍)
+            */
+            --w-beat-1: var(--slot-w);
+            --w-beat-2: calc(var(--slot-w) * 2 + var(--slot-gap));
+            --w-beat-4: calc(var(--slot-w) * 4 + var(--slot-gap) * 3);
         }
 
         * { box-sizing: border-box; }
@@ -42,13 +53,8 @@
         .btn-student { background: #e11d48; }
         .btn-export { background: #059669; }
         .btn-play { background: #7c3aed; }
-        .btn-action { 
-            background: #64748b; color: white; padding: 5px 12px; border: none; 
-            border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: bold;
-        }
-        .btn-action:hover { opacity: 0.9; }
 
-        /* 核心兩步切換 Tab */
+        /* 核心兩步切換 */
         .workflow-tabs {
             display: flex; justify-content: center; gap: 10px; margin-bottom: 10px;
         }
@@ -62,9 +68,9 @@
             box-shadow: 0 4px 10px rgba(37,99,235,0.25);
         }
 
-        /* 手鈴指引條 */
+        /* 手鈴配色指引 */
         .bell-guide-container {
-            max-width: 950px; margin: 0 auto 10px auto; background: white; border-radius: 10px;
+            max-width: 980px; margin: 0 auto 10px auto; background: white; border-radius: 10px;
             padding: 5px 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.03); display: flex; 
             align-items: center; justify-content: center; gap: 6px; flex-wrap: wrap;
         }
@@ -78,7 +84,7 @@
         .panel-box {
             background: white; padding: 12px 15px; border-radius: 14px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.05); margin: 0 auto 12px auto;
-            max-width: 950px; display: flex; flex-direction: column; gap: 8px; align-items: center;
+            max-width: 980px; display: flex; flex-direction: column; gap: 8px; align-items: center;
         }
         .control-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; align-items: center; width: 100%; }
         .control-group { 
@@ -109,16 +115,16 @@
         /* 彩虹琴鍵盤 */
         .keyboard { display: flex; justify-content: center; gap: 6px; margin-top: 4px; flex-wrap: wrap; }
         .note-btn { 
-            width: 54px; height: 54px; border-radius: 50%; border: 3px solid rgba(255,255,255,0.7); 
+            width: 52px; height: 52px; border-radius: 50%; border: 3px solid rgba(255,255,255,0.7); 
             cursor: pointer; box-shadow: 0 3px 5px rgba(0,0,0,0.1); 
             display: flex; flex-direction: column; justify-content: center; align-items: center; 
             line-height: 1.1; transition: transform 0.1s;
         }
         .note-btn:active { transform: scale(0.92); }
-        .note-btn .solfege { font-size: 14px; font-weight: 800; }
-        .note-btn .pitch { font-size: 10px; opacity: 0.9; font-weight: 700; }
+        .note-btn .solfege { font-size: 13px; font-weight: 800; }
+        .note-btn .pitch { font-size: 9px; opacity: 0.9; font-weight: 700; }
         .note-btn.rest-btn { border: 2px dashed #94a3b8; background: #f8fafc; color: #64748b; }
-        .note-btn.back-btn { border: 2px solid #ef4444; background: #fef2f2; color: #ef4444; width: 68px; border-radius: 27px; }
+        .note-btn.back-btn { border: 2px solid #ef4444; background: #fef2f2; color: #ef4444; width: 66px; border-radius: 26px; }
 
         .c-red { background-color: var(--c-red); color: white; }
         .d-orange { background-color: var(--d-orange); color: white; }
@@ -129,12 +135,12 @@
         .b-purple { background-color: var(--b-purple); color: white; }
 
         /* ===================================================
-           大譜表畫布 (精確每行 2 個小節，每行自帶譜號)
+           大譜表畫布 (精準槽位跨度與小節線對齊)
            =================================================== */
         .score-area { 
             min-height: 480px; background: white; border: 2px dashed #cbd5e1; 
-            border-radius: 16px; margin: 0 auto 20px auto; width: 95%; max-width: 960px;
-            padding: 30px 25px; box-shadow: 0 6px 14px rgba(0,0,0,0.04);
+            border-radius: 16px; margin: 0 auto 20px auto; width: 95%; max-width: 980px;
+            padding: 30px 20px; box-shadow: 0 6px 14px rgba(0,0,0,0.04);
             display: flex; flex-direction: column; gap: 35px; align-items: center;
         }
 
@@ -144,69 +150,74 @@
         .title-size-L { font-size: 30px; }
         .title-size-XL { font-size: 38px; }
 
-        /* 一個大系統行 (固定寬度，保證上下行對齊) */
         .grand-system {
-            display: flex; width: 100%; max-width: 880px; align-items: stretch; position: relative;
+            display: flex; width: 100%; max-width: 900px; align-items: stretch; position: relative;
             border-left: 3px solid #1e293b;
         }
 
         .piano-brace {
             width: 16px; display: flex; align-items: center; justify-content: center;
-            font-size: 125px; font-weight: 300; font-family: serif; color: #1e293b;
+            font-size: 130px; font-weight: 300; font-family: serif; color: #1e293b;
             user-select: none; margin-right: -2px; line-height: 0;
         }
 
-        /* 譜號欄 (每一行最左邊都有！) */
         .system-clefs {
             display: flex; flex-direction: column; justify-content: space-between;
             width: 70px; padding: 0 4px; border-right: 2px solid #334155;
             background: white; z-index: 2; flex-shrink: 0;
         }
         .clef-block {
-            height: 80px; display: flex; align-items: center; justify-content: center; gap: 4px;
+            height: 86px; display: flex; align-items: center; justify-content: center; gap: 4px;
         }
-        .clef-symbol-g { font-size: 58px; line-height: 1; user-select: none; }
-        .clef-symbol-f { font-size: 46px; line-height: 1; user-select: none; }
+        .clef-symbol-g { font-size: 60px; line-height: 1; user-select: none; }
+        .clef-symbol-f { font-size: 48px; line-height: 1; user-select: none; }
         .time-signature {
-            display: flex; flex-direction: column; font-size: 24px; font-weight: 900;
+            display: flex; flex-direction: column; font-size: 25px; font-weight: 900;
             line-height: 0.9; text-align: center;
         }
 
-        /* 小節單元 (固定等分剩餘寬度，小節線貫穿) */
+        /* 
+           小節容器：寬度由 4 個槽位 + 間距決定，左右留白固定，小節線貫穿
+        */
         .measure-box {
             flex: 1; display: flex; flex-direction: column; justify-content: space-between;
-            position: relative; border-right: 2px solid #334155; padding: 0 6px; background: white;
-            overflow: hidden; /* 防止音符溢出小節線！ */
+            position: relative; border-right: 2px solid #334155; padding: 0 16px; background: white;
         }
-        .measure-box.final-measure { border-right: 5px double #334155; }
+        .measure-box.final-measure { border-right: 6px double #334155; }
 
         .staff-track {
-            height: 80px; display: flex; align-items: center; position: relative;
-            width: 100%; justify-content: space-around;
+            height: 86px; display: flex; align-items: center; position: relative;
+            width: 100%; gap: var(--slot-gap); justify-content: flex-start;
         }
         .treble-track { margin-bottom: 25px; }
 
         /* 精確 5 條五線譜 */
         .show-staff-lines .staff-track::before {
-            content: ""; position: absolute; left: 0; right: 0; top: 12px; bottom: 12px;
+            content: ""; position: absolute; left: -16px; right: -16px; top: 14px; bottom: 14px;
             background: repeating-linear-gradient(
                 to bottom,
                 var(--staff-line-color) 0px,
                 var(--staff-line-color) 1.5px,
                 transparent 1.5px,
-                transparent 13.5px
+                transparent 14px
             );
             pointer-events: none; z-index: 1; border-bottom: 1.5px solid var(--staff-line-color);
         }
 
+        /* 
+           槽位插槽：寬度與音符對應
+           1 拍 = 68px
+           2 拍 = 148px (精確跨 2 個 1 拍)
+           4 拍 = 308px (精確跨 4 個 1 拍)
+        */
         .beat-slot {
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            height: 100%; z-index: 2; position: relative;
+            height: 100%; z-index: 2; position: relative; flex-shrink: 0;
         }
-        .slot-1 { flex: 1; }
-        .slot-05 { flex: 0.5; }
-        .slot-2 { flex: 2; }
-        .slot-4 { flex: 4; }
+        .slot-1 { width: var(--w-beat-1); }
+        .slot-05 { width: calc(var(--slot-w) * 0.5); }
+        .slot-2 { width: var(--w-beat-2); }
+        .slot-4 { width: var(--w-beat-4); }
 
         .score-note {
             display: flex; align-items: center; justify-content: center;
@@ -214,10 +225,9 @@
             position: relative; transition: 0.15s; cursor: pointer;
         }
         .score-note.playing-highlight {
-            transform: scale(1.15); box-shadow: 0 0 14px 5px rgba(245, 158, 11, 0.9) !important; z-index: 10;
+            transform: scale(1.12); box-shadow: 0 0 14px 5px rgba(245, 158, 11, 0.9) !important; z-index: 10;
         }
 
-        /* 當前輸入游標脈衝特效 */
         .current-input-cursor {
             border: 3px solid #2563eb !important;
             box-shadow: 0 0 0 4px rgba(37,99,235,0.35) !important;
@@ -225,7 +235,7 @@
         }
         @keyframes cursorPulse {
             0% { transform: scale(1); }
-            100% { transform: scale(1.12); }
+            100% { transform: scale(1.08); }
         }
 
         .placeholder-dashed {
@@ -237,21 +247,21 @@
             box-shadow: none !important; color: #64748b; font-weight: 800; font-size: 14px;
         }
 
-        /* 嚴格約束寬度，杜絕撞牆溢出 */
-        .beat-w-05 { width: 38px; height: 38px; border-radius: 50%; }
-        .beat-w-1 { width: 50px; height: 50px; border-radius: 50%; }
-        .beat-w-2 { width: 105px; height: 50px; border-radius: 25px; }
-        .beat-w-4 { width: 220px; height: 50px; border-radius: 25px; }
+        /* 音符本體尺寸：2 拍與 4 拍橫向填滿整個槽位跨度！ */
+        .beat-w-05 { width: 34px; height: 50px; border-radius: 17px; }
+        .beat-w-1 { width: 52px; height: 52px; border-radius: 50%; }
+        .beat-w-2 { width: var(--w-beat-2); height: 52px; border-radius: 26px; }
+        .beat-w-4 { width: var(--w-beat-4); height: 52px; border-radius: 26px; }
 
-        .dot { position: absolute; font-size: 24px; line-height: 1; font-weight: 900; left: 50%; transform: translateX(-50%); }
-        .dot-high { top: -14px; color: #0f172a; }
-        .dot-low { bottom: -14px; color: #0f172a; }
+        .dot { position: absolute; font-size: 26px; line-height: 1; font-weight: 900; left: 50%; transform: translateX(-50%); }
+        .dot-high { top: -15px; color: #0f172a; }
+        .dot-low { bottom: -15px; color: #0f172a; }
 
         .top-text, .bottom-text {
             font-size: 12px; font-weight: bold; color: #475569; position: absolute; width: 100%; text-align: center;
         }
-        .top-text { top: 0; }
-        .bottom-text { bottom: 0; font-size: 14px; color: #0f172a; font-weight: 800; }
+        .top-text { top: 2px; }
+        .bottom-text { bottom: 2px; font-size: 14px; color: #0f172a; font-weight: 800; }
 
         .hidden { display: none !important; }
 
@@ -347,10 +357,10 @@
                 </select>
             </div>
         </div>
-        <div class="control-row" style="width: 100%; max-width: 650px;">
+        <div class="control-row" style="width: 100%; max-width: 680px;">
             <div style="display:flex; flex-direction:column; width: 100%; text-align:left;">
                 <label style="font-size:12px; font-weight:bold; color:#475569; margin-bottom:4px;">
-                    📝 輸入完整歌詞（自動等分每行 2 小節並生成對應虛線圈 ◌）：
+                    📝 輸入完整歌詞（自動生成嚴格對齊的 1 拍虛線佔位圈 ◌）：
                 </label>
                 <textarea id="fullLyricsInput" style="height:65px; width:100%; font-size:14px;" placeholder="例: 瑪莉有隻小綿羊 小綿羊 小綿羊" oninput="onLyricsInput()"></textarea>
             </div>
@@ -360,7 +370,7 @@
         </div>
     </div>
 
-    <!-- 步驟二控制台 (新增了 ⌫ 清除鍵) -->
+    <!-- 步驟二控制台 -->
     <div id="step2Panel" class="panel-box hidden">
         <div class="control-row">
             <div class="control-group" style="background: #eef2ff;">
@@ -399,10 +409,10 @@
         </div>
 
         <div style="font-size: 13px; font-weight:bold; color: #2563eb; margin-top:2px;">
-            ⌨️ 按鍵盤 <b>1~7</b> 填入音階，按 <b>0 / 空格</b> 輸入休止符，打錯按 <b>Backspace</b> 或右側清除鍵：
+            ⌨️ 按鍵盤 <b>1~7</b> 填入音階，打錯按 <b>Backspace</b> 或點選右側清除鍵：
         </div>
 
-        <!-- 彩虹琴鍵盤 (帶有 ⌫ 清除退格鍵) -->
+        <!-- 彩虹琴鍵盤 -->
         <div class="keyboard" id="keyboardArea">
             <button class="note-btn c-red" onclick="processInput(261.63, 'Do', 'C', '1', 'c-red', false)"><span class="solfege">Do</span><span class="pitch">1 / C</span></button>
             <button class="note-btn d-orange" onclick="processInput(293.66, 'Re', 'D', '2', 'd-orange', false)"><span class="solfege">Re</span><span class="pitch">2 / D</span></button>
@@ -434,7 +444,7 @@
         let currentHand = 'RH'; 
         let isPlayingAll = false;
         
-        let cursorIndex = 0; // 當前待輸入的音符全局索引
+        let cursorIndex = 0;
         let currentBeat = 1;
         let currentFingering = '';
         let currentOctave = 0;
@@ -452,7 +462,6 @@
 
         const sleep = ms => new Promise(r => setTimeout(r, ms));
 
-        // 鍵盤監聽 (支援 Backspace 與 1-7)
         window.addEventListener('keydown', (e) => {
             if (!isTeacherMode || currentStep !== 2) return;
             if (['INPUT', 'SELECT', 'TEXTAREA'].includes(document.activeElement.tagName)) return;
@@ -542,7 +551,6 @@
             document.getElementById('scoreArea').classList.toggle('show-staff-lines', checked);
         }
 
-        /* 步驟一：打歌詞，嚴格按小節容量初始化 */
         function onLyricsInput() {
             const raw = document.getElementById('fullLyricsInput').value;
             const timeSigVal = document.getElementById('timeSigSelect').value;
@@ -633,12 +641,11 @@
         }
 
         /* 
-           核心邏輯優化：打 2 拍時，智能吞噬本小節多餘空圈並跳往下一小節！
+           音階填入：支援 2 拍與 4 拍精確吞噬對應數量的空圈
         */
         function processInput(baseFreq, solfege, pitch, num, colorClass, isRest) {
             playTone(baseFreq, currentOctave, currentBeat, isRest);
 
-            // 展開當前手部所有音符參照
             let allSlots = [];
             measures.forEach((m, mIdx) => {
                 m[currentHand].forEach((n, nIdx) => {
@@ -648,11 +655,12 @@
 
             if (cursorIndex < allSlots.length) {
                 const target = allSlots[cursorIndex];
-                const noteRef = measures[target.mIdx][currentHand][target.nIdx];
+                const curMeasureNotes = measures[target.mIdx][currentHand];
+                const noteRef = curMeasureNotes[target.nIdx];
 
                 noteRef.baseFreq = baseFreq;
                 noteRef.octave = currentOctave;
-                noteRef.beats = currentBeat;
+                noteRef.beats = currentBeat; // 填入當前拍數 (1, 2, 4 等)
                 noteRef.solfege = isRest ? '' : solfege;
                 noteRef.pitch = isRest ? '' : pitch;
                 noteRef.num = isRest ? '' : num;
@@ -661,31 +669,21 @@
                 noteRef.isRest = isRest;
                 noteRef.isPlaceholder = false;
 
-                // 檢查該小節拍數總和
-                const timeSigVal = document.getElementById('timeSigSelect').value;
-                const maxBeats = parseFloat(timeSigVal.split('/')[0]);
-                const curMeasureNotes = measures[target.mIdx][currentHand];
-
-                let measureTotalBeats = curMeasureNotes.reduce((sum, item) => sum + item.beats, 0);
-
-                // 如果超過了 4 拍（例如 1+1+2=4，但後面還有佔位的空圈）
-                if (measureTotalBeats > maxBeats) {
-                    // 自動移除緊隨其後多餘的未填佔位圈
-                    for (let i = target.nIdx + 1; i < curMeasureNotes.length; i++) {
-                        if (curMeasureNotes[i].isPlaceholder) {
-                            curMeasureNotes.splice(i, 1);
-                            i--;
+                // 若填入的拍數大於 1 拍（例如 2 拍要吃掉 1 個後續空圈，4 拍吃掉 3 個）
+                const slotsToAbsorb = Math.floor(currentBeat) - 1;
+                if (slotsToAbsorb > 0) {
+                    for (let s = 0; s < slotsToAbsorb; s++) {
+                        if (target.nIdx + 1 < curMeasureNotes.length && curMeasureNotes[target.nIdx + 1].isPlaceholder) {
+                            curMeasureNotes.splice(target.nIdx + 1, 1);
                         }
                     }
                 }
 
-                // 重新計算游標：自動前往下一格
                 cursorIndex++;
                 renderScore();
             }
         }
 
-        /* 清除/退格功能 */
         function backspaceDelete() {
             let allSlots = [];
             measures.forEach((m, mIdx) => {
@@ -696,7 +694,6 @@
 
             if (allSlots.length === 0) return;
 
-            // 如果游標所在處已經有填音，清除當前處；否則退回上一格清除
             let targetIdx = cursorIndex;
             if (targetIdx >= allSlots.length || allSlots[targetIdx].note.isPlaceholder) {
                 if (cursorIndex > 0) cursorIndex--;
@@ -706,7 +703,6 @@
             const target = allSlots[targetIdx];
             const noteRef = measures[target.mIdx][currentHand][target.nIdx];
 
-            // 重設為虛線佔位圈
             noteRef.baseFreq = 0;
             noteRef.beats = 1;
             noteRef.solfege = '';
@@ -720,7 +716,6 @@
             renderScore();
         }
 
-        /* 渲染大譜表：固定每行 2 小節，每行必有高低音譜號 */
         function renderScore() {
             const scoreArea = document.getElementById('scoreArea');
             const displayTitle = document.getElementById('displayTitle');
@@ -730,7 +725,7 @@
             const staffMode = document.getElementById('staffModeSelect').value;
             const timeSig = document.getElementById('timeSigSelect').value.split('/');
 
-            const MEASURES_PER_ROW = 2; // 每行固定 2 個小節，極其工整！
+            const MEASURES_PER_ROW = 2; // 每行固定 2 小節
             let globalSlotCounter = 0;
 
             for (let i = 0; i < measures.length; i += MEASURES_PER_ROW) {
@@ -746,7 +741,6 @@
                     currentSystem.appendChild(brace);
                 }
 
-                // 每一行開頭都必須具備譜號！(第一行附帶拍號，第二行起純譜號)
                 const isFirstRow = (i === 0);
                 const clefCol = document.createElement('div');
                 clefCol.className = 'system-clefs';
@@ -771,7 +765,6 @@
                 }
                 currentSystem.appendChild(clefCol);
 
-                // 渲染本行的 1~2 個小節
                 rowMeasures.forEach((measure, relIndex) => {
                     const actualIndex = i + relIndex;
                     const isFinal = (actualIndex === measures.length - 1);
@@ -795,7 +788,6 @@
                     currentSystem.appendChild(measureBox);
                 });
 
-                // 如果最後一行只有 1 個小節，補一個隱形小節維持寬度工整
                 if (rowMeasures.length < MEASURES_PER_ROW) {
                     const dummyBox = document.createElement('div');
                     dummyBox.className = 'measure-box';
@@ -953,7 +945,6 @@
             renderScore();
         }
 
-        // 初始化
         renderScore();
     </script>
 </body>
