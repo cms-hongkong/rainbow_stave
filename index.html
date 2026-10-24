@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>卡雅音樂教室 Clare Music Studio - 專業鋼琴大譜表 & 彩虹手鈴製譜工具</title>
+    <title>卡雅音樂教室 Clare Music Studio - 互動彩虹樂譜工作室</title>
     <style>
         :root {
             --c-red: #E74C3C;
@@ -14,26 +14,26 @@
             --a-blue: #2980B9;
             --b-purple: #8E44AD;
             --acc-black: #2C3E50;
-            --staff-line-color: #94a3b8;
+            --staff-line-color: #cbd5e1;
             --measure-w: 260px;
         }
 
         * { box-sizing: border-box; }
         body { 
             font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, "PingFang HK", "Microsoft JhengHei", sans-serif; 
-            text-align: center; background-color: #f1f5f9; padding: 15px; margin: 0; color: #1e293b;
+            text-align: center; background-color: #f1f5f9; padding: 12px; margin: 0; color: #1e293b;
         }
 
-        .header { margin-bottom: 12px; }
+        .header { margin-bottom: 10px; }
         .studio-tag { color: #8e44ad; font-size: 13px; font-weight: bold; letter-spacing: 2px; }
-        h1 { margin: 4px 0 0 0; font-size: 22px; color: #0f172a; }
+        h1 { margin: 3px 0 0 0; font-size: 22px; color: #0f172a; }
 
-        /* 頂部操作列 */
+        /* 頂部操作與導航列 */
         .top-bar {
-            display: flex; justify-content: center; gap: 8px; margin-bottom: 15px; flex-wrap: wrap; align-items: center;
+            display: flex; justify-content: center; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; align-items: center;
         }
         .btn { 
-            padding: 8px 15px; font-size: 13px; border-radius: 20px; border: none; 
+            padding: 8px 16px; font-size: 13px; border-radius: 20px; border: none; 
             cursor: pointer; color: white; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             transition: 0.15s; display: inline-flex; align-items: center; gap: 5px;
         }
@@ -42,43 +42,55 @@
         .btn-student { background: #e11d48; }
         .btn-export { background: #059669; }
         .btn-play { background: #7c3aed; }
-        .btn-autofit { background: #d97706; }
         .btn-action { 
-            background: #64748b; color: white; padding: 6px 12px; border: none; 
-            border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: bold;
+            background: #64748b; color: white; padding: 5px 12px; border: none; 
+            border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: bold;
         }
         .btn-action:hover { opacity: 0.9; }
 
-        /* 彩虹手鈴指引導航條 */
+        /* 原版兩大核心步驟 Tab 切換 */
+        .workflow-tabs {
+            display: flex; justify-content: center; gap: 10px; margin-bottom: 12px;
+        }
+        .step-tab {
+            padding: 9px 22px; font-size: 14px; font-weight: bold; border-radius: 10px;
+            border: 2px solid #cbd5e1; background: white; color: #64748b; cursor: pointer;
+            transition: 0.2s; display: flex; align-items: center; gap: 6px;
+        }
+        .step-tab.active {
+            background: #2563eb; color: white; border-color: #2563eb;
+            box-shadow: 0 4px 10px rgba(37,99,235,0.25);
+        }
+
+        /* 彩虹手鈴圖例指引條 */
         .bell-guide-container {
-            max-width: 1100px; margin: 0 auto 12px auto; background: white; border-radius: 12px;
-            padding: 8px 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.03); display: flex; 
+            max-width: 1100px; margin: 0 auto 10px auto; background: white; border-radius: 10px;
+            padding: 6px 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.03); display: flex; 
             align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap;
         }
         .bell-guide-title { font-size: 12px; font-weight: bold; color: #64748b; }
         .bell-guide-pill {
-            display: inline-flex; align-items: center; padding: 3px 8px;
-            border-radius: 12px; font-size: 12px; font-weight: bold; color: white;
+            display: inline-flex; align-items: center; padding: 2px 7px;
+            border-radius: 10px; font-size: 11px; font-weight: bold; color: white;
         }
 
-        /* 控制台容器 */
-        .control-panel {
-            background: white; padding: 14px; border-radius: 16px;
+        /* 步驟一與步驟二的主控制面板 */
+        .panel-box {
+            background: white; padding: 12px 15px; border-radius: 14px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.05); margin: 0 auto 12px auto;
-            max-width: 1100px; display: flex; flex-direction: column; gap: 10px; align-items: center;
+            max-width: 1100px; display: flex; flex-direction: column; gap: 8px; align-items: center;
         }
         .control-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; align-items: center; width: 100%; }
         .control-group { 
             display: flex; align-items: center; gap: 5px; background: #f8fafc; 
-            padding: 5px 10px; border-radius: 8px; font-size: 13px; border: 1px solid #e2e8f0;
+            padding: 4px 8px; border-radius: 8px; font-size: 13px; border: 1px solid #e2e8f0;
         }
         .control-group label { font-weight: bold; color: #334155; }
-        select, input[type="text"] { 
+        select, input[type="text"], textarea { 
             padding: 5px 8px; font-size: 13px; border-radius: 6px; border: 1px solid #cbd5e1; background: white;
         }
-        input[type="text"] { width: 100px; text-align: center; }
 
-        /* 按鈕式選擇器（拍長、指法、音域） */
+        /* 按鈕群組 (拍長、指法、音域八度) */
         .pill-group { display: flex; gap: 3px; }
         .pill-btn {
             border: 1px solid #cbd5e1; background: white; color: #334155; padding: 4px 8px;
@@ -89,17 +101,16 @@
             background: #2563eb; color: white; border-color: #2563eb; box-shadow: 0 1px 3px rgba(37,99,235,0.3);
         }
 
-        /* 手聲部高亮切換 */
         .hand-toggle-btn {
-            padding: 5px 12px; border-radius: 16px; font-weight: bold; cursor: pointer; border: 2px solid transparent; font-size: 13px;
+            padding: 4px 12px; border-radius: 14px; font-weight: bold; cursor: pointer; border: 2px solid transparent; font-size: 12px;
         }
         .hand-active-rh { background: #fee2e2; color: #b91c1c; border-color: #ef4444; }
         .hand-active-lh { background: #e0e7ff; color: #3730a3; border-color: #6366f1; }
 
-        /* 彩虹鍵盤 */
+        /* 彩虹琴鍵盤 */
         .keyboard { display: flex; justify-content: center; gap: 6px; margin-top: 4px; flex-wrap: wrap; }
         .note-btn { 
-            width: 60px; height: 60px; border-radius: 50%; border: 3px solid rgba(255,255,255,0.7); 
+            width: 58px; height: 58px; border-radius: 50%; border: 3px solid rgba(255,255,255,0.7); 
             cursor: pointer; box-shadow: 0 3px 5px rgba(0,0,0,0.1); 
             display: flex; flex-direction: column; justify-content: center; align-items: center; 
             line-height: 1.1; transition: transform 0.1s;
@@ -116,41 +127,38 @@
         .g-cyan { background-color: var(--g-cyan); color: white; }
         .a-blue { background-color: var(--a-blue); color: white; }
         .b-purple { background-color: var(--b-purple); color: white; }
-        .acc-black { background-color: var(--acc-black); color: white; }
 
         /* ===================================================
-           大譜表 (Grand Staff) 核心排版
+           鋼琴大譜表 (Grand Staff) 畫布核心排版
            =================================================== */
         .score-area { 
             min-height: 480px; background: white; border: 2px dashed #cbd5e1; 
             border-radius: 16px; margin: 0 auto 20px auto; width: 98%; max-width: 1140px;
             padding: 25px 20px; box-shadow: 0 6px 14px rgba(0,0,0,0.04);
-            display: flex; flex-direction: column; gap: 30px; text-align: left;
+            display: flex; flex-direction: column; gap: 28px; text-align: left;
         }
 
-        .sheet-title { width: 100%; font-weight: 800; color: #0f172a; margin-bottom: 10px; text-align: center; }
-        .title-size-S { font-size: 20px; }
-        .title-size-M { font-size: 26px; }
-        .title-size-L { font-size: 32px; }
-        .title-size-XL { font-size: 40px; }
+        .sheet-title { width: 100%; font-weight: 800; color: #0f172a; margin-bottom: 8px; text-align: center; }
+        .title-size-S { font-size: 18px; }
+        .title-size-M { font-size: 24px; }
+        .title-size-L { font-size: 30px; }
+        .title-size-XL { font-size: 38px; }
 
-        /* 一個大譜表系統行 (Grand System) */
         .grand-system {
             display: flex; flex-wrap: wrap; width: 100%; align-items: stretch; position: relative;
             margin-bottom: 20px; border-left: 3px solid #1e293b; padding-left: 0;
         }
 
-        /* 鋼琴連譜大括號 */
         .piano-brace {
-            width: 20px; display: flex; align-items: center; justify-content: center;
-            font-size: 130px; font-weight: 300; font-family: serif; color: #1e293b;
+            width: 18px; display: flex; align-items: center; justify-content: center;
+            font-size: 125px; font-weight: 300; font-family: serif; color: #1e293b;
             user-select: none; margin-right: -4px; line-height: 0;
         }
 
-        /* 譜號與拍號欄（尺寸放大對齊） */
+        /* 譜號與拍號欄（高度尺寸與拍號一致） */
         .system-clefs {
             display: flex; flex-direction: column; justify-content: space-between;
-            width: 80px; padding: 0 4px; border-right: 2px solid #334155;
+            width: 78px; padding: 0 3px; border-right: 2px solid #334155;
             background: white; z-index: 2;
         }
         .clef-block {
@@ -164,20 +172,19 @@
             line-height: 0.9; text-align: center;
         }
 
-        /* 小節單元 (Measure Box)：等寬且小節線全高度貫穿 */
+        /* 小節單元 (Measure Box)：等寬且小節線全高度垂直貫穿 */
         .measure-box {
             width: var(--measure-w); flex-shrink: 0; display: flex; flex-direction: column;
             justify-content: space-between; position: relative;
-            border-right: 2px solid #334155; padding: 0 6px; background: white; cursor: pointer;
+            border-right: 2px solid #334155; padding: 0 5px; background: white;
         }
         .measure-box.final-measure { border-right: 6px double #334155; }
 
-        /* 高音行與低音行五線譜軌道 */
         .staff-track {
             height: 90px; display: flex; align-items: center; position: relative;
             width: 100%; justify-content: space-between;
         }
-        .treble-track { margin-bottom: 25px; }
+        .treble-track { margin-bottom: 24px; }
 
         /* 精確 5 條五線譜 */
         .show-staff-lines .staff-track::before {
@@ -210,20 +217,32 @@
         .score-note.playing-highlight {
             transform: scale(1.18); box-shadow: 0 0 16px 6px rgba(245, 158, 11, 0.9) !important; z-index: 10;
         }
-        .selected-item .score-note {
-            box-shadow: 0 0 0 4px #38bdf8, 0 6px 12px rgba(0,0,0,0.2) !important;
-            transform: scale(1.08); z-index: 5;
+
+        /* 游標脈衝高亮效果 (原版填音階時當前待填圓圈) */
+        .current-input-cursor {
+            border: 3px solid #2563eb !important;
+            box-shadow: 0 0 0 4px rgba(37,99,235,0.3) !important;
+            animation: cursorPulse 1s infinite alternate;
+        }
+        @keyframes cursorPulse {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.15); }
+        }
+
+        /* 虛線空白待填圓圈 (原版 ◌) */
+        .placeholder-dashed {
+            background-color: white !important; border: 2px dashed #94a3b8;
+            box-shadow: none !important; color: #cbd5e1; font-weight: bold; font-size: 14px;
+        }
+        .rest-dashed {
+            background-color: white !important; border: 2px dashed #64748b;
+            box-shadow: none !important; color: #64748b; font-weight: 800; font-size: 14px;
         }
 
         .beat-w-05 { width: 44px; height: 44px; border-radius: 50%; }
         .beat-w-1 { width: 56px; height: 56px; border-radius: 50%; }
         .beat-w-2 { width: 110px; height: 56px; border-radius: 28px; }
         .beat-w-4 { width: 230px; height: 56px; border-radius: 28px; }
-
-        .rest-dashed {
-            background-color: white !important; border: 2.5px dashed #94a3b8;
-            box-shadow: none !important; color: #94a3b8; font-weight: 800; font-size: 16px;
-        }
 
         .dot { position: absolute; font-size: 26px; line-height: 1; font-weight: 900; left: 50%; transform: translateX(-50%); }
         .dot-high { top: -16px; color: #0f172a; }
@@ -233,22 +252,7 @@
             font-size: 12px; font-weight: bold; color: #475569; position: absolute; width: 100%; text-align: center;
         }
         .top-text { top: 0; }
-        .bottom-text { bottom: 0; }
-
-        /* 郊遊模式彈窗 (Auto-fit Modal) */
-        .modal-overlay {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 99;
-            display: flex; align-items: center; justify-content: center;
-        }
-        .modal-box {
-            background: white; border-radius: 16px; padding: 20px; width: 90%; max-width: 520px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2); text-align: left;
-        }
-        .modal-box h3 { margin: 0 0 10px 0; color: #0f172a; font-size: 18px; }
-        .modal-box textarea {
-            width: 100%; height: 75px; padding: 8px; border-radius: 8px;
-            border: 1px solid #cbd5e1; font-size: 14px; margin-bottom: 10px; resize: vertical;
-        }
+        .bottom-text { bottom: 0; font-size: 14px; color: #0f172a; }
 
         .hidden { display: none !important; }
 
@@ -256,7 +260,7 @@
         @media print {
             @page { margin: 8mm; size: auto; }
             body { background: white; padding: 0; }
-            .header, .top-bar, .control-panel, #keyboardArea, #editToolbar, #studentControls, .bell-guide-container, .modal-overlay { display: none !important; }
+            .header, .top-bar, .workflow-tabs, .panel-box, #keyboardArea, #studentControls, .bell-guide-container { display: none !important; }
             .score-area { border: none !important; box-shadow: none !important; width: 100% !important; max-width: 100% !important; padding: 0 !important; }
             .measure-box { border-color: black !important; }
             .system-clefs { border-color: black !important; }
@@ -275,21 +279,20 @@
     <div class="top-bar">
         <button id="modeBtn" class="btn btn-teacher" onclick="toggleMode()">🧑‍🏫 老師端 Teacher</button>
         <button class="btn btn-play" onclick="playAll()">▶️ 雙手同步播放 Play All</button>
-        <button class="btn btn-autofit" onclick="openAutoFitModal()">⚡ 郊遊/批次模式 Auto-Fit</button>
         <button class="btn btn-export" onclick="window.print()">📄 匯出 Export PDF</button>
 
         <div class="control-group" style="background: white;">
             <label>譜表模式:</label>
             <select id="staffModeSelect" onchange="renderScore()">
                 <option value="grand" selected>鋼琴大譜表 (Grand Staff 𝄞+𝄢)</option>
-                <option value="treble">單行高音譜號 (Treble Only 𝄞)</option>
-                <option value="bass">單行低音譜號 (Bass Only 𝄢)</option>
+                <option value="treble">單行高音譜號 (Treble 𝄞)</option>
+                <option value="bass">單行低音譜號 (Bass 𝄢)</option>
             </select>
         </div>
 
         <div class="control-group" style="background: white;">
             <label>拍號:</label>
-            <select id="timeSigSelect" onchange="renderScore()">
+            <select id="timeSigSelect" onchange="onLyricsInput()">
                 <option value="4/4" selected>4/4 拍</option>
                 <option value="3/4">3/4 拍</option>
                 <option value="2/4">2/4 拍</option>
@@ -302,7 +305,7 @@
         </div>
     </div>
 
-    <!-- 8 音彩虹手鈴指引導航條 -->
+    <!-- 手鈴指引條 -->
     <div class="bell-guide-container">
         <span class="bell-guide-title">🔔 彩虹手鈴配色指引 Bell Guide:</span>
         <span class="bell-guide-pill c-red">1 Do (C)</span>
@@ -315,100 +318,96 @@
         <span class="bell-guide-pill c-red">1̇ High C 🔴</span>
     </div>
 
-    <!-- 老師端編輯控制台 -->
-    <div id="teacherControls">
-        <!-- 浮動修改工具列 -->
-        <div id="editToolbar" class="hidden" style="background: #fef3c7; padding: 10px; border-radius: 10px; border: 1px solid #fde68a; max-width: 1100px; margin: 0 auto 10px auto;">
-            <span style="font-weight: bold; color: #92400e; margin-right: 15px;">✏️ 正在修改選取音符 Editing Selected Note</span>
-            <button class="btn-action" style="background:#e11d48;" onclick="deleteSelectedItem()">🗑️ 刪除此音符 Delete</button>
-            <button class="btn-action" style="background:#64748b;" onclick="cancelSelection()">❌ 取消選取 Cancel</button>
+    <!-- 原版核心兩步式切換 Tabs -->
+    <div class="workflow-tabs">
+        <button class="step-tab active" id="tabStep1" onclick="switchStep(1)">① 輸入歌詞 Input Lyrics</button>
+        <button class="step-tab" id="tabStep2" onclick="switchStep(2)">② 輸入音階 Input Notes</button>
+    </div>
+
+    <!-- 步驟一控制台：打歌名與歌詞 (即時生成虛線圈) -->
+    <div id="step1Panel" class="panel-box">
+        <div class="control-row">
+            <div class="control-group">
+                <label>標題 Title:</label>
+                <input type="text" id="titleInput" placeholder="例: 郊遊" style="width: 120px;" oninput="updateTitle()">
+            </div>
+            <div class="control-group">
+                <label>尺寸:</label>
+                <select id="titleSizeSelect" onchange="updateTitle()">
+                    <option value="S">S</option>
+                    <option value="M">M</option>
+                    <option value="L" selected>L</option>
+                    <option value="XL">XL</option>
+                </select>
+            </div>
+            <div class="control-group">
+                <label>速度 Tempo:</label>
+                <select id="bpmSelect">
+                    <option value="60">60 (慢)</option>
+                    <option value="90" selected>90 (中)</option>
+                    <option value="120">120 (快)</option>
+                </select>
+            </div>
         </div>
+        <div class="control-row" style="width: 100%; max-width: 650px;">
+            <div style="display:flex; flex-direction:column; width: 100%; text-align:left;">
+                <label style="font-size:12px; font-weight:bold; color:#475569; margin-bottom:4px;">
+                    📝 輸入完整歌詞（打字時上方會自動生成對齊的虛線圓圈 ◌，按空白鍵可留空）：
+                </label>
+                <textarea id="fullLyricsInput" style="height:70px; width:100%; font-size:15px;" placeholder="例: 走 走 走 走 走 我們小手拉小手" oninput="onLyricsInput()"></textarea>
+            </div>
+        </div>
+        <div style="font-size: 12px; color: #64748b;">
+            💡 打完歌詞後，請點擊上方「<b>② 輸入音階 Input Notes</b>」進入填音模式。
+        </div>
+    </div>
 
-        <div class="control-panel">
-            <!-- 第一行：手聲部選擇、歌名、尺寸、速度 -->
-            <div class="control-row">
-                <div class="control-group" style="background: #eef2ff;">
-                    <label>聲部 Voice:</label>
-                    <button type="button" id="btnRH" class="hand-toggle-btn hand-active-rh" onclick="setHand('RH')">𝄞 右手 (RH)</button>
-                    <button type="button" id="btnLH" class="hand-toggle-btn" onclick="setHand('LH')">𝄢 左手 (LH)</button>
-                </div>
-                <div class="control-group">
-                    <label>標題:</label>
-                    <input type="text" id="titleInput" placeholder="例: 郊遊" style="width: 110px;" oninput="updateTitle()">
-                </div>
-                <div class="control-group">
-                    <label>尺寸:</label>
-                    <select id="titleSizeSelect" onchange="updateTitle()">
-                        <option value="S">S</option>
-                        <option value="M">M</option>
-                        <option value="L" selected>L</option>
-                        <option value="XL">XL</option>
-                    </select>
-                </div>
-                <div class="control-group">
-                    <label>速度:</label>
-                    <select id="bpmSelect">
-                        <option value="60">60 (慢)</option>
-                        <option value="90" selected>90 (中)</option>
-                        <option value="120">120 (快)</option>
-                    </select>
+    <!-- 步驟二控制台：填音階模式 (按鍵盤 1~7 直接填入對應圓圈) -->
+    <div id="step2Panel" class="panel-box hidden">
+        <div class="control-row">
+            <div class="control-group" style="background: #eef2ff;">
+                <label>當前聲部 Voice:</label>
+                <button type="button" id="btnRH" class="hand-toggle-btn hand-active-rh" onclick="setHand('RH')">𝄞 右手 (RH)</button>
+                <button type="button" id="btnLH" class="hand-toggle-btn" onclick="setHand('LH')">𝄢 左手 (LH)</button>
+            </div>
+            <!-- 拍長按鈕組 -->
+            <div class="control-group">
+                <label>拍長:</label>
+                <div class="pill-group" id="beatPills">
+                    <button class="pill-btn" data-val="0.5" onclick="setBeat(0.5)">0.5 拍</button>
+                    <button class="pill-btn active" data-val="1" onclick="setBeat(1)">1 拍</button>
+                    <button class="pill-btn" data-val="2" onclick="setBeat(2)">2 拍</button>
+                    <button class="pill-btn" data-val="4" onclick="setBeat(4)">4 拍</button>
                 </div>
             </div>
-
-            <!-- 第二行：拍長(按鈕選取)、指法(按鈕選取)、音域(按鈕選取)、歌詞 -->
-            <div class="control-row">
-                <!-- 拍長按鈕組 -->
-                <div class="control-group">
-                    <label>拍長:</label>
-                    <div class="pill-group" id="beatPills">
-                        <button class="pill-btn" data-val="0.5" onclick="setBeat(0.5)">0.5 拍</button>
-                        <button class="pill-btn active" data-val="1" onclick="setBeat(1)">1 拍</button>
-                        <button class="pill-btn" data-val="2" onclick="setBeat(2)">2 拍</button>
-                        <button class="pill-btn" data-val="4" onclick="setBeat(4)">4 拍</button>
-                    </div>
-                </div>
-
-                <!-- 指法按鈕組 -->
-                <div class="control-group">
-                    <label>指法:</label>
-                    <div class="pill-group" id="fingeringPills">
-                        <button class="pill-btn active" data-val="" onclick="setFingering('')">無</button>
-                        <button class="pill-btn" data-val="1" onclick="setFingering('1')">1</button>
-                        <button class="pill-btn" data-val="2" onclick="setFingering('2')">2</button>
-                        <button class="pill-btn" data-val="3" onclick="setFingering('3')">3</button>
-                        <button class="pill-btn" data-val="4" onclick="setFingering('4')">4</button>
-                        <button class="pill-btn" data-val="5" onclick="setFingering('5')">5</button>
-                    </div>
-                </div>
-
-                <!-- 音域按鈕組 -->
-                <div class="control-group">
-                    <label>音域:</label>
-                    <div class="pill-group" id="octavePills">
-                        <button class="pill-btn" data-val="-1" onclick="setOctave(-1)">低音 (·底)</button>
-                        <button class="pill-btn active" data-val="0" onclick="setOctave(0)">中音</button>
-                        <button class="pill-btn" data-val="1" onclick="setOctave(1)">高音 (·頂)</button>
-                    </div>
-                </div>
-
-                <!-- 歌詞輸入框 -->
-                <div class="control-group">
-                    <label>歌詞:</label>
-                    <input type="text" id="lyricInput" placeholder="下一個字" style="width: 75px;">
-                </div>
-
-                <div class="control-group" style="background: transparent; border: none;">
-                    <button class="btn-action" style="background:#0284c7;" onclick="addNewMeasure()">➕ 新增小節</button>
-                    <button class="btn-action" style="background:#dc2626;" onclick="clearScore()">🗑️ 清空</button>
+            <!-- 指法按鈕組 -->
+            <div class="control-group">
+                <label>指法:</label>
+                <div class="pill-group" id="fingeringPills">
+                    <button class="pill-btn active" data-val="" onclick="setFingering('')">無</button>
+                    <button class="pill-btn" data-val="1" onclick="setFingering('1')">1</button>
+                    <button class="pill-btn" data-val="2" onclick="setFingering('2')">2</button>
+                    <button class="pill-btn" data-val="3" onclick="setFingering('3')">3</button>
+                    <button class="pill-btn" data-val="4" onclick="setFingering('4')">4</button>
+                    <button class="pill-btn" data-val="5" onclick="setFingering('5')">5</button>
                 </div>
             </div>
-
-            <div style="font-size: 12px; color: #64748b; margin-top: 2px;">
-                💡 支援鍵盤數字鍵 <b>1~7</b> 輸入音符，按 <b>0</b> 輸入虛線休止符 (Dashed Rest)
+            <!-- 音域按鈕組 -->
+            <div class="control-group">
+                <label>音域:</label>
+                <div class="pill-group" id="octavePills">
+                    <button class="pill-btn" data-val="-1" onclick="setOctave(-1)">低音 (·底)</button>
+                    <button class="pill-btn active" data-val="0" onclick="setOctave(0)">中音</button>
+                    <button class="pill-btn" data-val="1" onclick="setOctave(1)">高音 (·頂)</button>
+                </div>
             </div>
         </div>
 
-        <!-- 彩虹手鈴琴鍵輸入盤 -->
+        <div style="font-size: 13px; font-weight:bold; color: #2563eb; margin-top:2px;">
+            ⌨️ 請按鍵盤數字 <b>1~7</b> 或點選琴鍵填入音階（按 <b>0</b> 或 <b>Space</b> 輸入虛線休止符，游標會自動前往下一格）：
+        </div>
+
+        <!-- 彩虹琴鍵盤 -->
         <div class="keyboard" id="keyboardArea">
             <button class="note-btn c-red" onclick="processInput(261.63, 'Do', 'C', '1', 'c-red', false)"><span class="solfege">Do</span><span class="pitch">1 / C</span></button>
             <button class="note-btn d-orange" onclick="processInput(293.66, 'Re', 'D', '2', 'd-orange', false)"><span class="solfege">Re</span><span class="pitch">2 / D</span></button>
@@ -421,7 +420,7 @@
         </div>
     </div>
 
-    <!-- 學生端互動提示 -->
+    <!-- 學生端演奏提示 -->
     <div id="studentControls" class="hidden">
         <p style="font-size: 18px; color: #e11d48; font-weight: bold; margin: 10px 0;">
             🔔 請點選樂譜上的音符，一起演奏雙手大譜表吧！ Tap notes to play!
@@ -433,50 +432,24 @@
         <div id="displayTitle" class="sheet-title title-size-L hidden"></div>
     </div>
 
-    <!-- 郊遊/批次音符自動配對彈窗 (Auto-Fit Modal) -->
-    <div id="autoFitModal" class="modal-overlay hidden">
-        <div class="modal-box">
-            <h3>⚡ 郊遊/批次模式：音符與歌詞自動配對</h3>
-            <p style="font-size:12px; color:#64748b; margin-top:-4px;">輸入歌詞與簡譜數字（1-7 或 0），系統會自動垂直配對並依據拍號分小節：</p>
-            
-            <label style="font-size:13px; font-weight:bold;">歌詞 Lyrics (以空格或逐字分開):</label>
-            <textarea id="batchLyrics" placeholder="走 走 走 走 走 我們小手拉小手"></textarea>
-
-            <label style="font-size:13px; font-weight:bold;">簡譜/音符 Notes (1-7 或 0 休止符):</label>
-            <textarea id="batchNotes" placeholder="1 1 2 3 1 3 3 4 5"></textarea>
-
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:5px;">
-                <div style="font-size:13px;">
-                    <label>預設拍長:</label>
-                    <select id="batchBeatSelect">
-                        <option value="1" selected>每音 1 拍</option>
-                        <option value="0.5">每音 0.5 拍</option>
-                    </select>
-                </div>
-                <div style="display:flex; gap:8px;">
-                    <button class="btn-action" style="background:#64748b;" onclick="closeAutoFitModal()">取消 Cancel</button>
-                    <button class="btn-action" style="background:#d97706;" onclick="applyAutoFit()">🚀 自動產生樂譜 Apply</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <script>
         let isTeacherMode = true;
+        let currentStep = 1; // 1: 輸入歌詞, 2: 輸入音階
         let currentHand = 'RH'; 
         let isPlayingAll = false;
-        let selectedItemInfo = null; 
+        
+        // 游標指向當前待填入音階的插槽索引
+        let cursorIndex = 0;
 
-        // 按鈕狀態設定
         let currentBeat = 1;
         let currentFingering = '';
         let currentOctave = 0;
 
+        // 樂譜數據模型以小節為核心
         let measures = [
             { id: 1, RH: [], LH: [] }
         ];
 
-        // Web Audio API
         const AudioContext = window.AudioContext || window.webkitAudioContext;
         const audioCtx = new AudioContext();
 
@@ -486,9 +459,9 @@
 
         const sleep = ms => new Promise(r => setTimeout(r, ms));
 
-        // 鍵盤數字鍵監聽
+        // 鍵盤快捷鍵 (在第 2 步填音模式下生效)
         window.addEventListener('keydown', (e) => {
-            if (!isTeacherMode) return;
+            if (!isTeacherMode || currentStep !== 2) return;
             if (['INPUT', 'SELECT', 'TEXTAREA'].includes(document.activeElement.tagName)) return;
 
             const map = {
@@ -499,7 +472,8 @@
                 '5': [392.00, 'Sol', 'G', '5', 'g-cyan', false],
                 '6': [440.00, 'La', 'A', '6', 'a-blue', false],
                 '7': [493.88, 'Ti', 'B', '7', 'b-purple', false],
-                '0': [0, '休', 'Rest', '0', 'rest-dashed', true]
+                '0': [0, '休', 'Rest', '0', 'rest-dashed', true],
+                ' ': [0, '休', 'Rest', '0', 'rest-dashed', true]
             };
             if (map[e.key]) {
                 e.preventDefault();
@@ -507,7 +481,19 @@
             }
         });
 
-        // 按鈕切換輔助函數
+        function switchStep(step) {
+            currentStep = step;
+            document.getElementById('tabStep1').classList.toggle('active', step === 1);
+            document.getElementById('tabStep2').classList.toggle('active', step === 2);
+            document.getElementById('step1Panel').classList.toggle('hidden', step !== 1);
+            document.getElementById('step2Panel').classList.toggle('hidden', step !== 2);
+
+            if (step === 2) {
+                cursorIndex = 0; // 重置游標到第一個音
+            }
+            renderScore();
+        }
+
         function setBeat(val) {
             currentBeat = parseFloat(val);
             document.querySelectorAll('#beatPills .pill-btn').forEach(btn => {
@@ -535,6 +521,8 @@
             document.getElementById('btnLH').className = 'hand-toggle-btn ' + (hand === 'LH' ? 'hand-active-lh' : '');
             if (hand === 'LH') setOctave(-1);
             else setOctave(0);
+            cursorIndex = 0;
+            renderScore();
         }
 
         function updateTitle() {
@@ -555,8 +543,64 @@
             document.getElementById('scoreArea').classList.toggle('show-staff-lines', checked);
         }
 
-        function addNewMeasure() {
-            measures.push({ id: Date.now(), RH: [], LH: [] });
+        /* 步驟一：打歌詞即時生成虛線圈與小節 */
+        function onLyricsInput() {
+            const raw = document.getElementById('fullLyricsInput').value;
+            const timeSigVal = document.getElementById('timeSigSelect').value;
+            const maxBeats = parseFloat(timeSigVal.split('/')[0]);
+
+            // 分割歌詞字元 (包含空格)
+            const chars = raw.split('');
+            measures = [{ id: 1, RH: [], LH: [] }];
+            let curMeasure = measures[0];
+            let curBeats = 0;
+
+            chars.forEach((ch, idx) => {
+                if (curBeats + 1 > maxBeats) {
+                    measures.push({ id: Date.now() + Math.random(), RH: [], LH: [] });
+                    curMeasure = measures[measures.length - 1];
+                    curBeats = 0;
+                }
+
+                // 建立待填音階的虛線佔位圈
+                curMeasure.RH.push({
+                    baseFreq: 0,
+                    octave: 0,
+                    beats: 1,
+                    solfege: '',
+                    pitch: '',
+                    num: '',
+                    color: 'placeholder-dashed',
+                    fingering: '',
+                    lyric: ch === ' ' ? '' : ch,
+                    isRest: ch === ' ',
+                    isPlaceholder: true,
+                    id: Date.now() + Math.random() + idx
+                });
+
+                // 左手可同步建立佔位
+                curMeasure.LH.push({
+                    baseFreq: 0,
+                    octave: -1,
+                    beats: 1,
+                    solfege: '',
+                    pitch: '',
+                    num: '',
+                    color: 'placeholder-dashed',
+                    fingering: '',
+                    lyric: '',
+                    isRest: true,
+                    isPlaceholder: true,
+                    id: Date.now() + Math.random() + idx + 999
+                });
+
+                curBeats += 1;
+            });
+
+            if (chars.length === 0) {
+                measures = [{ id: 1, RH: [], LH: [] }];
+            }
+
             renderScore();
         }
 
@@ -592,150 +636,41 @@
             osc2.stop(now + duration);
         }
 
+        /* 步驟二：輸入音階，依序填入圓圈內 */
         function processInput(baseFreq, solfege, pitch, num, colorClass, isRest) {
-            const octaveIndex = currentOctave;
-            const beats = currentBeat;
-            const fingering = currentFingering;
-            const lyric = document.getElementById('lyricInput').value;
+            playTone(baseFreq, currentOctave, currentBeat, isRest);
 
-            playTone(baseFreq, octaveIndex, beats, isRest);
-
-            if (isTeacherMode) {
-                const newNote = {
-                    baseFreq: baseFreq,
-                    octave: octaveIndex,
-                    beats: beats,
-                    solfege: solfege,
-                    pitch: pitch,
-                    num: num,
-                    color: colorClass,
-                    fingering: fingering,
-                    lyric: lyric,
-                    isRest: isRest,
-                    id: Date.now() + Math.random()
-                };
-
-                if (selectedItemInfo) {
-                    const { measureIndex, hand, noteIndex } = selectedItemInfo;
-                    measures[measureIndex][hand][noteIndex] = newNote;
-                    selectedItemInfo = null;
-                } else {
-                    let targetMeasure = measures[measures.length - 1];
-                    const timeSigVal = document.getElementById('timeSigSelect').value;
-                    const maxBeats = parseFloat(timeSigVal.split('/')[0]);
-
-                    let curBeats = targetMeasure[currentHand].reduce((sum, n) => sum + n.beats, 0);
-
-                    if (curBeats + beats > maxBeats) {
-                        addNewMeasure();
-                        targetMeasure = measures[measures.length - 1];
-                    }
-
-                    targetMeasure[currentHand].push(newNote);
-                }
-
-                document.getElementById('lyricInput').value = '';
-                renderScore();
-            }
-        }
-
-        /* 郊遊模式彈窗控制 */
-        function openAutoFitModal() {
-            document.getElementById('autoFitModal').classList.remove('hidden');
-        }
-        function closeAutoFitModal() {
-            document.getElementById('autoFitModal').classList.add('hidden');
-        }
-
-        function applyAutoFit() {
-            const lyricsRaw = document.getElementById('batchLyrics').value.trim();
-            const notesRaw = document.getElementById('batchNotes').value.trim();
-            const defaultBeat = parseFloat(document.getElementById('batchBeatSelect').value);
-            const timeSigVal = document.getElementById('timeSigSelect').value;
-            const maxBeats = parseFloat(timeSigVal.split('/')[0]);
-
-            if (!notesRaw) {
-                alert("請至少輸入音符或簡譜數字！");
-                return;
-            }
-
-            // 分割歌詞與音符
-            const lyrics = lyricsRaw ? (lyricsRaw.includes(' ') ? lyricsRaw.split(/\s+/) : lyricsRaw.split('')) : [];
-            const notesTokens = notesRaw.split(/\s+/);
-
-            const noteMap = {
-                '1': [261.63, 'Do', 'C', '1', 'c-red', false],
-                '2': [293.66, 'Re', 'D', '2', 'd-orange', false],
-                '3': [329.63, 'Mi', 'E', '3', 'e-yellow', false],
-                '4': [349.23, 'Fa', 'F', '4', 'f-green', false],
-                '5': [392.00, 'Sol', 'G', '5', 'g-cyan', false],
-                '6': [440.00, 'La', 'A', '6', 'a-blue', false],
-                '7': [493.88, 'Ti', 'B', '7', 'b-purple', false],
-                '0': [0, '休', 'Rest', '0', 'rest-dashed', true]
-            };
-
-            measures = [{ id: Date.now(), RH: [], LH: [] }];
-            let curMeasure = measures[0];
-            let curBeats = 0;
-
-            notesTokens.forEach((token, idx) => {
-                const info = noteMap[token] || [261.63, 'Do', 'C', '1', 'c-red', false];
-                const lyric = lyrics[idx] || '';
-
-                if (curBeats + defaultBeat > maxBeats) {
-                    measures.push({ id: Date.now() + Math.random(), RH: [], LH: [] });
-                    curMeasure = measures[measures.length - 1];
-                    curBeats = 0;
-                }
-
-                curMeasure[currentHand].push({
-                    baseFreq: info[0],
-                    octave: currentOctave,
-                    beats: defaultBeat,
-                    solfege: info[1],
-                    pitch: info[2],
-                    num: info[3],
-                    color: info[4],
-                    fingering: '',
-                    lyric: lyric,
-                    isRest: info[5],
-                    id: Date.now() + Math.random()
+            // 取得當前聲部所有拍格
+            let allSlots = [];
+            measures.forEach((m, mIdx) => {
+                m[currentHand].forEach((n, nIdx) => {
+                    allSlots.push({ mIdx, nIdx, note: n });
                 });
-                curBeats += defaultBeat;
             });
 
-            closeAutoFitModal();
-            renderScore();
-        }
+            if (cursorIndex < allSlots.length) {
+                const target = allSlots[cursorIndex];
+                const noteRef = measures[target.mIdx][currentHand][target.nIdx];
 
-        function deleteSelectedItem() {
-            if (!selectedItemInfo) return;
-            const { measureIndex, hand, noteIndex } = selectedItemInfo;
-            measures[measureIndex][hand].splice(noteIndex, 1);
-            selectedItemInfo = null;
-            renderScore();
-        }
+                noteRef.baseFreq = baseFreq;
+                noteRef.octave = currentOctave;
+                noteRef.beats = currentBeat;
+                noteRef.solfege = isRest ? '' : solfege;
+                noteRef.pitch = isRest ? '' : pitch;
+                noteRef.num = isRest ? '' : num;
+                noteRef.color = isRest ? 'rest-dashed' : colorClass;
+                noteRef.fingering = currentFingering;
+                noteRef.isRest = isRest;
+                noteRef.isPlaceholder = false;
 
-        function cancelSelection() {
-            selectedItemInfo = null;
-            renderScore();
-        }
-
-        function clearScore() {
-            if (confirm("確定要清空整份樂譜嗎？\nClear the entire score?")) {
-                measures = [{ id: 1, RH: [], LH: [] }];
-                selectedItemInfo = null;
+                // 游標自動跳往下一格
+                cursorIndex++;
                 renderScore();
             }
         }
 
         /* 渲染大譜表 */
         function renderScore() {
-            const editToolbar = document.getElementById('editToolbar');
-            if (editToolbar) {
-                editToolbar.classList.toggle('hidden', selectedItemInfo === null);
-            }
-
             const scoreArea = document.getElementById('scoreArea');
             const displayTitle = document.getElementById('displayTitle');
             scoreArea.innerHTML = '';
@@ -754,7 +689,7 @@
                 currentSystem.appendChild(brace);
             }
 
-            // 譜號與拍號欄 (高度一致)
+            // 譜號與拍號欄位
             const clefCol = document.createElement('div');
             clefCol.className = 'system-clefs';
 
@@ -776,6 +711,9 @@
             }
             currentSystem.appendChild(clefCol);
 
+            // 計算全域音符計數，標定當前游標脈衝位置
+            let globalSlotIndex = 0;
+
             measures.forEach((measure, mIndex) => {
                 const isFinal = (mIndex === measures.length - 1);
                 const measureBox = document.createElement('div');
@@ -784,14 +722,14 @@
                 if (staffMode === 'grand' || staffMode === 'treble') {
                     const trebleTrack = document.createElement('div');
                     trebleTrack.className = 'staff-track treble-track';
-                    renderTrackNotes(trebleTrack, measure.RH, mIndex, 'RH');
+                    globalSlotIndex = renderTrackNotes(trebleTrack, measure.RH, mIndex, 'RH', globalSlotIndex);
                     measureBox.appendChild(trebleTrack);
                 }
 
                 if (staffMode === 'grand' || staffMode === 'bass') {
                     const bassTrack = document.createElement('div');
                     bassTrack.className = 'staff-track bass-track';
-                    renderTrackNotes(bassTrack, measure.LH, mIndex, 'LH');
+                    renderTrackNotes(bassTrack, measure.LH, mIndex, 'LH', 0);
                     measureBox.appendChild(bassTrack);
                 }
 
@@ -801,17 +739,19 @@
             scoreArea.appendChild(currentSystem);
         }
 
-        function renderTrackNotes(trackElement, notesArray, measureIndex, hand) {
+        function renderTrackNotes(trackElement, notesArray, measureIndex, hand, slotCounter) {
             if (!notesArray || notesArray.length === 0) {
                 const emptySlot = document.createElement('div');
                 emptySlot.className = 'beat-slot slot-4';
                 emptySlot.style.opacity = '0.3';
                 emptySlot.innerHTML = `<span style="font-size:12px; color:#94a3b8;">(${hand})</span>`;
                 trackElement.appendChild(emptySlot);
-                return;
+                return slotCounter;
             }
 
             notesArray.forEach((item, nIndex) => {
+                const isCurrentCursor = (currentStep === 2 && hand === currentHand && slotCounter === cursorIndex);
+
                 const slot = document.createElement('div');
                 let slotClass = 'slot-1';
                 if (item.beats === 0.5) slotClass = 'slot-05';
@@ -834,7 +774,10 @@
 
                 noteDiv.id = `note-${item.id}`;
 
-                if (item.isRest) {
+                if (item.isPlaceholder) {
+                    noteDiv.className = `score-note placeholder-dashed ${beatWClass}`;
+                    noteDiv.innerText = '◌';
+                } else if (item.isRest) {
                     noteDiv.className = `score-note rest-dashed ${beatWClass}`;
                     noteDiv.innerText = '◌';
                 } else {
@@ -849,28 +792,20 @@
                     if (item.octave === -1) noteDiv.innerHTML += '<span class="dot dot-low">•</span>';
                 }
 
-                if (selectedItemInfo && 
-                    selectedItemInfo.measureIndex === measureIndex && 
-                    selectedItemInfo.hand === hand && 
-                    selectedItemInfo.noteIndex === nIndex) {
-                    slot.classList.add('selected-item');
+                if (isCurrentCursor) {
+                    noteDiv.classList.add('current-input-cursor');
                 }
 
+                // 點擊圓圈直接發聲並選中該格為填音游標
+                const capturedSlotIndex = slotCounter;
                 noteDiv.onclick = (e) => {
                     e.stopPropagation();
                     if (isPlayingAll) return;
 
                     playTone(item.baseFreq, item.octave, item.beats, item.isRest);
 
-                    if (isTeacherMode) {
-                        if (selectedItemInfo && 
-                            selectedItemInfo.measureIndex === measureIndex && 
-                            selectedItemInfo.hand === hand && 
-                            selectedItemInfo.noteIndex === nIndex) {
-                            selectedItemInfo = null;
-                        } else {
-                            selectedItemInfo = { measureIndex, hand, noteIndex: nIndex };
-                        }
+                    if (isTeacherMode && currentStep === 2) {
+                        cursorIndex = capturedSlotIndex;
                         renderScore();
                     }
                 };
@@ -885,7 +820,10 @@
                 }
 
                 trackElement.appendChild(slot);
+                slotCounter++;
             });
+
+            return slotCounter;
         }
 
         async function playAll() {
@@ -893,7 +831,6 @@
             if (audioCtx.state === 'suspended') await audioCtx.resume();
 
             isPlayingAll = true;
-            selectedItemInfo = null;
             renderScore();
 
             const bpm = parseInt(document.getElementById('bpmSelect').value);
@@ -927,24 +864,29 @@
         function toggleMode() {
             isTeacherMode = !isTeacherMode;
             const btn = document.getElementById('modeBtn');
-            const teacherControls = document.getElementById('teacherControls');
-            const studentControls = document.getElementById('studentControls');
+            const tabs = document.querySelector('.workflow-tabs');
+            const s1 = document.getElementById('step1Panel');
+            const s2 = document.getElementById('step2Panel');
+            const student = document.getElementById('studentControls');
 
             if (isTeacherMode) {
                 btn.innerText = '🧑‍🏫 老師端 Teacher';
                 btn.className = 'btn btn-teacher';
-                teacherControls.classList.remove('hidden');
-                studentControls.classList.add('hidden');
+                tabs.classList.remove('hidden');
+                switchStep(currentStep);
+                student.classList.add('hidden');
             } else {
                 btn.innerText = '🔔 學生演奏端 Student';
                 btn.className = 'btn btn-student';
-                teacherControls.classList.add('hidden');
-                studentControls.classList.remove('hidden');
-                selectedItemInfo = null;
+                tabs.classList.add('hidden');
+                s1.classList.add('hidden');
+                s2.classList.add('hidden');
+                student.classList.remove('hidden');
             }
             renderScore();
         }
 
+        // 初始化
         renderScore();
     </script>
 </body>
