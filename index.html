@@ -5,8 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>rainbow_stave - 卡雅音樂教室 彩虹製譜工作室</title>
     
-    <!-- 引入 Tone.js 專業音色合成引擎 -->
+    <!-- 引入 Tone.js 專業音色庫與 html2canvas 高清圖片下載庫 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
     <style>
         :root {
@@ -17,10 +18,8 @@
             --g-cyan: #1ABC9C;
             --a-blue: #2980B9;
             --b-purple: #8E44AD;
-            --acc-black: #2C3E50;
             --staff-line-color: #94a3b8;
             
-            /* 標準小節槽度尺寸：1拍 68px，間距 12px */
             --slot-w: 68px;
             --slot-gap: 12px;
             --w-beat-1: var(--slot-w);
@@ -55,10 +54,8 @@
         .btn-export-png { background: #0ea5e9; }
         .btn-play { background: #7c3aed; }
 
-        /* 核心兩步切換 */
-        .workflow-tabs {
-            display: flex; justify-content: center; gap: 10px; margin-bottom: 10px;
-        }
+        /* 兩步切換 Tabs */
+        .workflow-tabs { display: flex; justify-content: center; gap: 10px; margin-bottom: 10px; }
         .step-tab {
             padding: 8px 20px; font-size: 14px; font-weight: bold; border-radius: 10px;
             border: 2px solid #cbd5e1; background: white; color: #64748b; cursor: pointer;
@@ -81,7 +78,7 @@
             border-radius: 10px; font-size: 11px; font-weight: bold; color: white;
         }
 
-        /* 控制台 */
+        /* 控制台容器 */
         .panel-box {
             background: white; padding: 12px 15px; border-radius: 14px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.05); margin: 0 auto 12px auto;
@@ -103,9 +100,7 @@
             border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: bold; transition: 0.1s;
         }
         .pill-btn:hover { background: #f1f5f9; }
-        .pill-btn.active {
-            background: #2563eb; color: white; border-color: #2563eb;
-        }
+        .pill-btn.active { background: #2563eb; color: white; border-color: #2563eb; }
 
         .hand-toggle-btn {
             padding: 4px 10px; border-radius: 14px; font-weight: bold; cursor: pointer; border: 2px solid transparent; font-size: 12px;
@@ -127,17 +122,16 @@
         .note-btn.rest-btn { border: 2px dashed #94a3b8; background: #f8fafc; color: #64748b; }
         .note-btn.back-btn { border: 2px solid #ef4444; background: #fef2f2; color: #ef4444; width: 66px; border-radius: 26px; }
 
-        .c-red { background-color: var(--c-red); color: white; }
-        .d-orange { background-color: var(--d-orange); color: white; }
-        .e-yellow { background-color: var(--e-yellow); color: #1e293b; }
-        .f-green { background-color: var(--f-green); color: white; }
-        .g-cyan { background-color: var(--g-cyan); color: white; }
-        .a-blue { background-color: var(--a-blue); color: white; }
-        .b-purple { background-color: var(--b-purple); color: white; }
+        /* 彩虹顏色類別 (確保背景顏色正常顯示) */
+        .c-red { background-color: var(--c-red) !important; color: white !important; }
+        .d-orange { background-color: var(--d-orange) !important; color: white !important; }
+        .e-yellow { background-color: var(--e-yellow) !important; color: #1e293b !important; }
+        .f-green { background-color: var(--f-green) !important; color: white !important; }
+        .g-cyan { background-color: var(--g-cyan) !important; color: white !important; }
+        .a-blue { background-color: var(--a-blue) !important; color: white !important; }
+        .b-purple { background-color: var(--b-purple) !important; color: white !important; }
 
-        /* ===================================================
-           大譜表畫布 (精準向量鋼琴大括號、小節貫穿排版)
-           =================================================== */
+        /* 大譜表畫布容器 */
         .score-area { 
             min-height: 520px; background: white; border: 2px dashed #cbd5e1; 
             border-radius: 16px; margin: 0 auto 20px auto; width: 95%; max-width: 980px;
@@ -160,7 +154,6 @@
             border-left: none;
         }
 
-        /* 經典鋼琴大括號 (Curly Brace with Center Point，左側不帶額外直線) */
         .brace-svg-container {
             width: 24px; display: flex; align-items: stretch; justify-content: center;
             user-select: none; margin-right: -1px; flex-shrink: 0; position: relative;
@@ -432,16 +425,16 @@
             ⌨️ <b>直接點擊樂譜上的音符修改。</b> 或按鍵盤 <b>1~7</b> 填入，<b>Backspace</b> 清除：
         </div>
 
-        <!-- 彩虹琴鍵盤 -->
+        <!-- 彩虹琴鍵盤 (傳遞正確的色彩 Class 名稱) -->
         <div class="keyboard" id="keyboardArea">
-            <button class="note-btn c-red" id="key-1" onclick="processInput('C', 'Do', '1', '#E74C3C', false)"><span class="solfege">Do</span><span class="pitch">1 / C</span></button>
-            <button class="note-btn d-orange" id="key-2" onclick="processInput('D', 'Re', '2', '#E67E22', false)"><span class="solfege">Re</span><span class="pitch">2 / D</span></button>
-            <button class="note-btn e-yellow" id="key-3" onclick="processInput('E', 'Mi', '3', '#F1C40F', false)"><span class="solfege">Mi</span><span class="pitch">3 / E</span></button>
-            <button class="note-btn f-green" id="key-4" onclick="processInput('F', 'Fa', '4', '#2ECC71', false)"><span class="solfege">Fa</span><span class="pitch">4 / F</span></button>
-            <button class="note-btn g-cyan" id="key-5" onclick="processInput('G', 'Sol', '5', '#1ABC9C', false)"><span class="solfege">Sol</span><span class="pitch">5 / G</span></button>
-            <button class="note-btn a-blue" id="key-6" onclick="processInput('A', 'La', '6', '#2980B9', false)"><span class="solfege">La</span><span class="pitch">6 / A</span></button>
-            <button class="note-btn b-purple" id="key-7" onclick="processInput('B', 'Ti', '7', '#8E44AD', false)"><span class="solfege">Ti</span><span class="pitch">7 / B</span></button>
-            <button class="note-btn rest-btn" id="key-0" onclick="processInput('Rest', '休', '0', '#94a3b8', true)"><span class="solfege">◌</span><span class="pitch">Rest</span></button>
+            <button class="note-btn c-red" id="key-1" onclick="processInput('C', 'Do', '1', 'c-red', false)"><span class="solfege">Do</span><span class="pitch">1 / C</span></button>
+            <button class="note-btn d-orange" id="key-2" onclick="processInput('D', 'Re', '2', 'd-orange', false)"><span class="solfege">Re</span><span class="pitch">2 / D</span></button>
+            <button class="note-btn e-yellow" id="key-3" onclick="processInput('E', 'Mi', '3', 'e-yellow', false)"><span class="solfege">Mi</span><span class="pitch">3 / E</span></button>
+            <button class="note-btn f-green" id="key-4" onclick="processInput('F', 'Fa', '4', 'f-green', false)"><span class="solfege">Fa</span><span class="pitch">4 / F</span></button>
+            <button class="note-btn g-cyan" id="key-5" onclick="processInput('G', 'Sol', '5', 'g-cyan', false)"><span class="solfege">Sol</span><span class="pitch">5 / G</span></button>
+            <button class="note-btn a-blue" id="key-6" onclick="processInput('A', 'La', '6', 'a-blue', false)"><span class="solfege">La</span><span class="pitch">6 / A</span></button>
+            <button class="note-btn b-purple" id="key-7" onclick="processInput('B', 'Ti', '7', 'b-purple', false)"><span class="solfege">Ti</span><span class="pitch">7 / B</span></button>
+            <button class="note-btn rest-btn" id="key-0" onclick="processInput('Rest', '休', '0', 'rest-dashed', true)"><span class="solfege">◌</span><span class="pitch">Rest</span></button>
             <button class="note-btn back-btn" onclick="backspaceDelete()"><span style="font-size:16px;">⌫</span><span style="font-size:10px; font-weight:bold;">清除</span></button>
         </div>
     </div>
@@ -486,15 +479,13 @@
             { id: 1, RH: [], LH: [] }
         ];
 
-        // 智能吸附座標雷達網
         let clickTargets = [];
 
-        // 🌟 點擊樂譜智能吸附游標系統 (Smart Snap)
+        // 智能吸附游標系統
         document.getElementById('scoreArea').addEventListener('click', (e) => {
             if (!isTeacherMode || currentStep !== 2) return;
             if (e.target.closest('#titleContainer')) return;
 
-            const rect = document.getElementById('scoreArea').getBoundingClientRect();
             const clickX = e.clientX;
             const clickY = e.clientY;
 
@@ -667,7 +658,6 @@
             renderScore();
         }
 
-        // 🌟 Tone.js PolySynth 專業發聲
         async function playTone(tonePitchStr, beats, isRest) {
             if (isRest || !tonePitchStr) return;
             await Tone.start();
@@ -702,7 +692,7 @@
                 noteRef.solfege = isRest ? '' : solfege;
                 noteRef.pitch = isRest ? '' : (pitch + (currentAccidental ? currentAccidental : ''));
                 noteRef.num = isRest ? '' : num;
-                noteRef.color = isRest ? 'rest-dashed' : colorClass;
+                noteRef.color = isRest ? 'rest-dashed' : colorClass; // 確保設定顏色 Class
                 noteRef.fingering = currentFingering;
                 noteRef.isRest = isRest;
                 noteRef.isPlaceholder = false;
@@ -741,7 +731,6 @@
             const noteRef = measures[target.mIdx][currentHand][target.nIdx];
 
             noteRef.acc = '';
-            noteRef.baseFreq = 0;
             noteRef.beats = 1;
             noteRef.solfege = '';
             noteRef.pitch = '';
@@ -754,7 +743,6 @@
             renderScore();
         }
 
-        /* 渲染大譜表 */
         function renderScore() {
             const container = document.getElementById('systemsContainer');
             container.innerHTML = '';
@@ -773,7 +761,6 @@
                 const currentSystem = document.createElement('div');
                 currentSystem.className = 'grand-system';
 
-                // 標準鋼琴大括號 (Curly Brace)
                 if (staffMode === 'grand') {
                     const braceContainer = document.createElement('div');
                     braceContainer.className = 'brace-svg-container';
@@ -851,7 +838,6 @@
                 container.appendChild(currentSystem);
             }
 
-            // 排版完成後，收集音符螢幕座標以供智能吸附
             setTimeout(() => {
                 const noteNodes = document.querySelectorAll('.score-note');
                 noteNodes.forEach(node => {
@@ -912,6 +898,7 @@
                     noteDiv.className = `score-note rest-dashed ${beatWClass}`;
                     noteDiv.innerText = '◌';
                 } else {
+                    // 正確套用彩虹背景顏色 Class
                     noteDiv.className = `score-note ${item.color} ${beatWClass}`;
                     noteDiv.innerHTML = `
                         <div style="display:flex; flex-direction:column; align-items:center; line-height:1.05;">
@@ -959,7 +946,6 @@
             return counter;
         }
 
-        // 🌟 雙手小節同步播放
         async function playAll() {
             if (isPlayingAll || measures.length === 0) return;
             await Tone.start();
@@ -1024,70 +1010,31 @@
             renderScore();
         }
 
-        // 🌟 原生高品質 Canvas 直接繪圖輸出 (Pure Canvas 2x HD Export)
+        // 🌟 使用 html2canvas 直接截圖下載，徹底解決瀏覽器安全限制報錯
         function exportHDImage() {
             const scoreArea = document.getElementById('scoreArea');
-            const titleEl = document.getElementById('displayTitle');
-            const subTitleEl = document.getElementById('displaySubtitle');
-            const titleText = titleEl && !document.getElementById('titleContainer').classList.contains('hidden') ? titleEl.innerText : "";
-            const subTitleText = subTitleEl ? subTitleEl.innerText : "";
+            const originalBorder = scoreArea.style.border;
+            scoreArea.style.border = 'none';
 
-            const exportScale = 2; // 2x 超高清採樣
-            const canvas = document.createElement("canvas");
-            const w = scoreArea.offsetWidth;
-            const h = scoreArea.offsetHeight;
-
-            canvas.width = (w + 40) * exportScale;
-            canvas.height = (h + 40) * exportScale;
-            const ctx = canvas.getContext("2d");
-            ctx.scale(exportScale, exportScale);
-
-            ctx.fillStyle = "white";
-            ctx.fillRect(0, 0, w + 40, h + 40);
-
-            // 繪製標題與副標題
-            if (titleText) {
-                ctx.fillStyle = "#0f172a";
-                ctx.font = "bold 32px 'Segoe UI', sans-serif";
-                ctx.textAlign = "center";
-                ctx.fillText(titleText, (w + 40) / 2, 45);
-
-                if (subTitleText) {
-                    ctx.fillStyle = "#64748b";
-                    ctx.font = "600 14px 'Segoe UI', sans-serif";
-                    ctx.fillText(subTitleText, (w + 40) / 2, 70);
-                }
-            }
-
-            // 將整個 DOM 畫布序列化為 SVG 映像並繪製入 Canvas
-            const data = (new XMLSerializer()).serializeToString(scoreArea);
-            const DOMURL = window.URL || window.webkitURL || window;
-            const img = new Image();
-            const svgBlob = new Blob([`
-                <svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}">
-                    <foreignObject width="100%" height="100%">
-                        <div xmlns="http://www.w3.org/1999/xhtml" style="background:white; font-family:'Segoe UI', sans-serif;">
-                            ${scoreArea.innerHTML}
-                        </div>
-                    </foreignObject>
-                </svg>
-            `], { type: 'image/svg+xml;charset=utf-8' });
-
-            const url = DOMURL.createObjectURL(svgBlob);
-            img.onload = function () {
-                ctx.drawImage(img, 20, 20);
-                DOMURL.revokeObjectURL(url);
-
-                try {
-                    const link = document.createElement("a");
-                    link.download = (titleText ? titleText : "rainbow_stave_score") + ".png";
-                    link.href = canvas.toDataURL("image/png", 1.0);
-                    link.click();
-                } catch (e) {
-                    alert("瀏覽器安全限制，建議使用「📄 匯出 PDF」直接列印保存。");
-                }
-            };
-            img.src = url;
+            html2canvas(scoreArea, {
+                scale: 2, // 2x 高解析度繪圖
+                useCORS: true,
+                backgroundColor: '#ffffff'
+            }).then(canvas => {
+                scoreArea.style.border = originalBorder;
+                const titleEl = document.getElementById('displayTitle');
+                const titleText = titleEl && !document.getElementById('titleContainer').classList.contains('hidden') ? titleEl.innerText : "rainbow_stave_score";
+                
+                const link = document.createElement('a');
+                link.download = `${titleText}.png`;
+                link.href = canvas.toDataURL('image/png', 1.0);
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }).catch(err => {
+                scoreArea.style.border = originalBorder;
+                alert("圖片匯出失敗，建議使用「📄 匯出 PDF」列印。");
+            });
         }
 
         // 初始化
