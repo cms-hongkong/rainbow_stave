@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>rainbow_stave - 卡雅音樂教室 彩虹製譜工作室</title>
     
-    <!-- 引入 Tone.js 專業音色庫與 html2canvas 高清圖片下載庫 -->
+    <!-- 引入 Tone.js 與 html2canvas -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
@@ -38,7 +38,6 @@
         .studio-tag { color: #8e44ad; font-size: 13px; font-weight: 800; letter-spacing: 2px; }
         h1 { margin: 2px 0 0 0; font-size: 22px; color: #0f172a; }
 
-        /* 頂部操作列 */
         .top-bar {
             display: flex; justify-content: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; align-items: center;
         }
@@ -54,7 +53,6 @@
         .btn-export-png { background: #0ea5e9; }
         .btn-play { background: #7c3aed; }
 
-        /* 兩步切換 Tabs */
         .workflow-tabs { display: flex; justify-content: center; gap: 10px; margin-bottom: 10px; }
         .step-tab {
             padding: 8px 20px; font-size: 14px; font-weight: bold; border-radius: 10px;
@@ -66,7 +64,6 @@
             box-shadow: 0 4px 10px rgba(37,99,235,0.25);
         }
 
-        /* 手鈴指引條 */
         .bell-guide-container {
             max-width: 980px; margin: 0 auto 10px auto; background: white; border-radius: 10px;
             padding: 6px 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.03); display: flex; 
@@ -78,7 +75,6 @@
             border-radius: 10px; font-size: 11px; font-weight: bold; color: white;
         }
 
-        /* 控制台容器 */
         .panel-box {
             background: white; padding: 12px 15px; border-radius: 14px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.05); margin: 0 auto 12px auto;
@@ -108,7 +104,6 @@
         .hand-active-rh { background: #fee2e2; color: #b91c1c; border-color: #ef4444; }
         .hand-active-lh { background: #e0e7ff; color: #3730a3; border-color: #6366f1; }
 
-        /* 彩虹琴鍵盤 */
         .keyboard { display: flex; justify-content: center; gap: 6px; margin-top: 4px; flex-wrap: wrap; }
         .note-btn { 
             width: 52px; height: 52px; border-radius: 50%; border: 3px solid rgba(255,255,255,0.7); 
@@ -122,7 +117,6 @@
         .note-btn.rest-btn { border: 2px dashed #94a3b8; background: #f8fafc; color: #64748b; }
         .note-btn.back-btn { border: 2px solid #ef4444; background: #fef2f2; color: #ef4444; width: 66px; border-radius: 26px; }
 
-        /* 彩虹顏色類別 (確保背景顏色正常顯示) */
         .c-red { background-color: var(--c-red) !important; color: white !important; }
         .d-orange { background-color: var(--d-orange) !important; color: white !important; }
         .e-yellow { background-color: var(--e-yellow) !important; color: #1e293b !important; }
@@ -131,7 +125,6 @@
         .a-blue { background-color: var(--a-blue) !important; color: white !important; }
         .b-purple { background-color: var(--b-purple) !important; color: white !important; }
 
-        /* 大譜表畫布容器 */
         .score-area { 
             min-height: 520px; background: white; border: 2px dashed #cbd5e1; 
             border-radius: 16px; margin: 0 auto 20px auto; width: 95%; max-width: 980px;
@@ -364,9 +357,9 @@
         <div class="control-row" style="width: 100%; max-width: 680px;">
             <div style="display:flex; flex-direction:column; width: 100%; text-align:left;">
                 <label style="font-size:12px; font-weight:bold; color:#475569; margin-bottom:4px;">
-                    📝 輸入完整歌詞（自動生成嚴格對齊的佔位符 ◌）：
+                    📝 輸入完整歌詞（自動生成嚴格對齊的佔位符 ◌，如不需歌詞可直接前往步驟 ②）：
                 </label>
-                <textarea id="fullLyricsInput" style="height:65px; width:100%; font-size:14px;" placeholder="例: 瑪莉有隻小綿羊 (💡 如不需要歌詞，可直接略過此步入音階)" oninput="onLyricsInput()"></textarea>
+                <textarea id="fullLyricsInput" style="height:65px; width:100%; font-size:14px;" placeholder="例: 瑪莉有隻小綿羊 小綿羊 小綿羊" oninput="onLyricsInput()"></textarea>
             </div>
         </div>
         <div style="font-size: 12px; color: #64748b;">
@@ -422,10 +415,10 @@
         </div>
 
         <div style="font-size: 13px; font-weight:bold; color: #2563eb; margin-top:2px;">
-            ⌨️ <b>直接點擊樂譜上的音符修改。</b> 或按鍵盤 <b>1~7</b> 填入，<b>Backspace</b> 清除：
+            ⌨️ <b>直接點擊樂譜上的音符修改。</b> 或按鍵盤 <b>1~7</b> 連續輸入，滿拍自動換小節：
         </div>
 
-        <!-- 彩虹琴鍵盤 (傳遞正確的色彩 Class 名稱) -->
+        <!-- 彩虹琴鍵盤 -->
         <div class="keyboard" id="keyboardArea">
             <button class="note-btn c-red" id="key-1" onclick="processInput('C', 'Do', '1', 'c-red', false)"><span class="solfege">Do</span><span class="pitch">1 / C</span></button>
             <button class="note-btn d-orange" id="key-2" onclick="processInput('D', 'Re', '2', 'd-orange', false)"><span class="solfege">Re</span><span class="pitch">2 / D</span></button>
@@ -655,6 +648,13 @@
                 curBeats += 1;
             });
 
+            // 自動將最後小節補滿佔位空格
+            while (curBeats < maxBeats) {
+                curMeasure.RH.push({ acc: '', octave: 0, beats: 1, solfege: '', pitch: '', num: '', color: 'placeholder-dashed', fingering: '', lyric: '', isRest: true, isPlaceholder: true, id: Date.now() + Math.random() });
+                curMeasure.LH.push({ acc: '', octave: -1, beats: 1, solfege: '', pitch: '', num: '', color: 'placeholder-dashed', fingering: '', lyric: '', isRest: true, isPlaceholder: true, id: Date.now() + Math.random() + 999 });
+                curBeats++;
+            }
+
             renderScore();
         }
 
@@ -666,6 +666,9 @@
             synth.triggerAttackRelease(tonePitchStr, durStr);
         }
 
+        /* 
+           🌟 核心重構：嚴格遵守拍子配搭 + 自動連續無限小節擴展
+        */
         function processInput(pitch, solfege, num, colorClass, isRest) {
             let baseOctave = currentHand === 'RH' ? 4 : 3;
             let finalOctave = baseOctave + currentOctave;
@@ -674,6 +677,10 @@
 
             playTone(tonePitchStr, currentBeat, isRest);
 
+            const timeSigVal = document.getElementById('timeSigSelect').value;
+            const maxBeats = parseInt(timeSigVal.split('/')[0]);
+
+            // 展開當前手部所有音符插槽
             let allSlots = [];
             measures.forEach((m, mIdx) => {
                 m[currentHand].forEach((n, nIdx) => {
@@ -681,34 +688,103 @@
                 });
             });
 
-            if (cursorIndex < allSlots.length) {
-                const target = allSlots[cursorIndex];
-                const curMeasureNotes = measures[target.mIdx][currentHand];
-                const noteRef = curMeasureNotes[target.nIdx];
+            // 🌟 關鍵修復：如果已經到達結尾，自動產生全新小節！
+            if (cursorIndex >= allSlots.length) {
+                let newMeasure = { id: Date.now() + Math.random(), RH: [], LH: [] };
+                for (let i = 0; i < maxBeats; i++) {
+                    newMeasure.RH.push({ acc: '', octave: 0, beats: 1, solfege: '', pitch: '', num: '', color: 'placeholder-dashed', fingering: '', lyric: '', isRest: true, isPlaceholder: true, id: Date.now() + Math.random() + i });
+                    newMeasure.LH.push({ acc: '', octave: -1, beats: 1, solfege: '', pitch: '', num: '', color: 'placeholder-dashed', fingering: '', lyric: '', isRest: true, isPlaceholder: true, id: Date.now() + Math.random() + i + 999 });
+                }
+                measures.push(newMeasure);
 
-                noteRef.acc = currentAccidental;
-                noteRef.octave = currentOctave;
-                noteRef.beats = currentBeat;
-                noteRef.solfege = isRest ? '' : solfege;
-                noteRef.pitch = isRest ? '' : (pitch + (currentAccidental ? currentAccidental : ''));
-                noteRef.num = isRest ? '' : num;
-                noteRef.color = isRest ? 'rest-dashed' : colorClass; // 確保設定顏色 Class
-                noteRef.fingering = currentFingering;
-                noteRef.isRest = isRest;
-                noteRef.isPlaceholder = false;
+                allSlots = [];
+                measures.forEach((m, mIdx) => {
+                    m[currentHand].forEach((n, nIdx) => {
+                        allSlots.push({ mIdx, nIdx, note: n });
+                    });
+                });
+            }
 
-                const slotsToAbsorb = Math.floor(currentBeat) - 1;
-                if (slotsToAbsorb > 0) {
-                    for (let s = 0; s < slotsToAbsorb; s++) {
-                        if (target.nIdx + 1 < curMeasureNotes.length && curMeasureNotes[target.nIdx + 1].isPlaceholder) {
-                            curMeasureNotes.splice(target.nIdx + 1, 1);
-                        }
+            let target = allSlots[cursorIndex];
+            let curMeasureNotes = measures[target.mIdx][currentHand];
+
+            // 計算目前小節在游標之前的拍數總和
+            let beatsBefore = 0;
+            for (let i = 0; i < target.nIdx; i++) {
+                beatsBefore += curMeasureNotes[i].beats;
+            }
+
+            let remainingBeatsInMeasure = maxBeats - beatsBefore;
+
+            // 🌟 關鍵修復：如果所選拍數大於當前小節剩餘拍數（例如剩 1 拍卻選了 4 拍），自動開新小節放入！
+            if (currentBeat > remainingBeatsInMeasure) {
+                // 1. 先把當前小節剩餘拍數用休止符/佔位補齊
+                while (beatsBefore < maxBeats) {
+                    if (target.nIdx < curMeasureNotes.length) {
+                        curMeasureNotes[target.nIdx].isPlaceholder = true;
+                        curMeasureNotes[target.nIdx].color = 'placeholder-dashed';
+                        beatsBefore += curMeasureNotes[target.nIdx].beats;
+                        target.nIdx++;
+                    } else {
+                        curMeasureNotes.push({ acc: '', octave: 0, beats: 1, solfege: '', pitch: '', num: '', color: 'placeholder-dashed', fingering: '', lyric: '', isRest: true, isPlaceholder: true, id: Date.now() + Math.random() });
+                        beatsBefore += 1;
                     }
                 }
 
-                cursorIndex++;
-                renderScore();
+                // 2. 建立新小節
+                let newMeasure = { id: Date.now() + Math.random(), RH: [], LH: [] };
+                for (let i = 0; i < maxBeats; i++) {
+                    newMeasure.RH.push({ acc: '', octave: 0, beats: 1, solfege: '', pitch: '', num: '', color: 'placeholder-dashed', fingering: '', lyric: '', isRest: true, isPlaceholder: true, id: Date.now() + Math.random() + i });
+                    newMeasure.LH.push({ acc: '', octave: -1, beats: 1, solfege: '', pitch: '', num: '', color: 'placeholder-dashed', fingering: '', lyric: '', isRest: true, isPlaceholder: true, id: Date.now() + Math.random() + i + 999 });
+                }
+                measures.splice(target.mIdx + 1, 0, newMeasure);
+
+                // 重新定位到新小節的第一拍
+                allSlots = [];
+                measures.forEach((m, mIdx) => {
+                    m[currentHand].forEach((n, nIdx) => {
+                        allSlots.push({ mIdx, nIdx, note: n });
+                    });
+                });
+                
+                // 找到新小節起始索引
+                let newTargetIndex = 0;
+                for (let i = 0; i < allSlots.length; i++) {
+                    if (allSlots[i].mIdx === target.mIdx + 1) {
+                        newTargetIndex = i;
+                        break;
+                    }
+                }
+                cursorIndex = newTargetIndex;
+                target = allSlots[cursorIndex];
+                curMeasureNotes = measures[target.mIdx][currentHand];
             }
+
+            // 寫入音符資料
+            const noteRef = curMeasureNotes[target.nIdx];
+            noteRef.acc = currentAccidental;
+            noteRef.octave = currentOctave;
+            noteRef.beats = currentBeat;
+            noteRef.solfege = isRest ? '' : solfege;
+            noteRef.pitch = isRest ? '' : (pitch + (currentAccidental ? currentAccidental : ''));
+            noteRef.num = isRest ? '' : num;
+            noteRef.color = isRest ? 'rest-dashed' : colorClass;
+            noteRef.fingering = currentFingering;
+            noteRef.isRest = isRest;
+            noteRef.isPlaceholder = false;
+
+            // 吞噬多餘的佔位空圈（2 拍吞噬 1 個，4 拍吞噬 3 個）
+            const slotsToAbsorb = Math.floor(currentBeat) - 1;
+            if (slotsToAbsorb > 0) {
+                for (let s = 0; s < slotsToAbsorb; s++) {
+                    if (target.nIdx + 1 < curMeasureNotes.length && curMeasureNotes[target.nIdx + 1].isPlaceholder) {
+                        curMeasureNotes.splice(target.nIdx + 1, 1);
+                    }
+                }
+            }
+
+            cursorIndex++;
+            renderScore();
         }
 
         function backspaceDelete() {
@@ -751,7 +827,7 @@
             const staffMode = document.getElementById('staffModeSelect').value;
             const timeSig = document.getElementById('timeSigSelect').value.split('/');
 
-            const MEASURES_PER_ROW = 2;
+            const MEASURES_PER_ROW = 2; // 每行固定 2 小節
             let indexRH = 0;
             let indexLH = 0;
 
@@ -898,7 +974,6 @@
                     noteDiv.className = `score-note rest-dashed ${beatWClass}`;
                     noteDiv.innerText = '◌';
                 } else {
-                    // 正確套用彩虹背景顏色 Class
                     noteDiv.className = `score-note ${item.color} ${beatWClass}`;
                     noteDiv.innerHTML = `
                         <div style="display:flex; flex-direction:column; align-items:center; line-height:1.05;">
@@ -1010,14 +1085,13 @@
             renderScore();
         }
 
-        // 🌟 使用 html2canvas 直接截圖下載，徹底解決瀏覽器安全限制報錯
         function exportHDImage() {
             const scoreArea = document.getElementById('scoreArea');
             const originalBorder = scoreArea.style.border;
             scoreArea.style.border = 'none';
 
             html2canvas(scoreArea, {
-                scale: 2, // 2x 高解析度繪圖
+                scale: 2,
                 useCORS: true,
                 backgroundColor: '#ffffff'
             }).then(canvas => {
@@ -1037,7 +1111,6 @@
             });
         }
 
-        // 初始化
         onLyricsInput();
     </script>
 </body>
